@@ -1,0 +1,232 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: API сервис терминологии
+servers:
+  - url: http://localhost:8000/api/
+paths:
+  /glossary:
+    get:
+      summary: получение списка справочников
+      tags:
+        - Справочники
+      parameters:
+        - in: query
+          name: date
+          required: false
+          schema:
+            type: string
+            format: date
+          description: получение списка справочников, актуальных на указанную дату
+      responses:
+        "200":
+          description: список справочников
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Glossaries"
+        "400":
+          description: Некорректные входные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Любая неожиданная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /glossary/{glossary_id}/items:
+    get:
+      summary: получение элементов заданного справочника текущей версии
+      tags:
+        - Справочники
+      parameters:
+        - in: path
+          name: glossary_id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: version
+          required: false
+          schema:
+            type: string
+          description: получение элементов заданного справочника указанной версии
+      responses:
+        "200":
+          description: список элементов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Glossaries"
+        "400":
+          description: Некорректные входные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Любая неожиданная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: валидация элементов заданного справочника текущей версии
+      tags:
+        - Справочники
+      parameters:
+        - in: path
+          name: glossary_id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: version
+          required: false
+          schema:
+            type: string
+          description: валидация элемента заданного справочника по указанной версии
+
+      requestBody:
+        description: список элеметов
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  value:
+                    type: string
+
+      responses:
+        "200":
+          description: список элементов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Glossaries"
+        "400":
+          description: Некорректные входные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Любая неожиданная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Glossary:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        short_name:
+          type: string
+        description:
+          type: string
+
+    Glossaries:
+      type: array
+      items:
+        type: object
+        properties:
+          count:
+            type: integer
+          next:
+            type: string
+          previous:
+            type: string
+          results:
+            type: array
+            items:
+              $ref: "#/components/schemas/Glossary"
+        example:
+          count: 40
+          next: "https://api.example.org/accounts/?page=5"
+          previous: "https://api.example.org/accounts/?page=3"
+          results: []
+
+    GlossaryVersion:
+      type: object
+      required:
+        - id
+        - version
+        - initial_date
+        - glossary
+      properties:
+        id:
+          type: integer
+        version:
+          type: string
+        initial_date:
+          type: string
+          format: date
+        glossary:
+          $ref: "#/components/schemas/Glossary"
+
+    GlossaryElement:
+      type: object
+      required:
+        - id
+        - parent_id
+        - code
+        - value
+      properties:
+        id:
+          type: integer
+        parent_id:
+          $ref: "#/components/schemas/Glossary"
+        code:
+          type: string
+        value:
+          type: string
+
+    GlossaryElements:
+      type: array
+      items:
+        type: object
+        properties:
+          count:
+            type: integer
+          next:
+            type: string
+          previous:
+            type: string
+          results:
+            type: array
+            items:
+              $ref: "#/components/schemas/GlossaryElement"
+        example:
+          count: 40
+          next: "https://api.example.org/accounts/?page=5"
+          previous: "https://api.example.org/accounts/?page=3"
+          results: []
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
