@@ -142,6 +142,11 @@ components:
           type: string
         description:
           type: string
+        version:
+          type: string
+        start_date:
+          type: string
+          format: date
 
     Glossaries:
       type: array

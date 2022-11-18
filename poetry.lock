@@ -80,6 +80,40 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-debug-toolbar"
+version = "3.7.0"
+description = "A configurable set of panels that display various debug information about the current request/response."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Django = ">=3.2.4"
+sqlparse = ">=0.2.0"
+
+[[package]]
+name = "django-extensions"
+version = "3.2.1"
+description = "Extensions for Django"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+Django = ">=3.2"
+
+[[package]]
+name = "django-filter"
+version = "22.1"
+description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Django = ">=3.2"
+
+[[package]]
 name = "djangorestframework"
 version = "3.14.0"
 description = "Web APIs for Django, made easy."
@@ -162,7 +196,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "3c4d9c3fc83304dc958cf18601e6bbb1c101b97ba52ce3d4d92ee0c82099a074"
+content-hash = "e6799f82e9afd24e91fbcf884377408ec8dcbbc7b1a1353497dcf6c5799997fa"
 
 [metadata.files]
 asgiref = [
@@ -194,6 +228,9 @@ click = [
 ]
 colorama = []
 django = []
+django-debug-toolbar = []
+django-extensions = []
+django-filter = []
 djangorestframework = []
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
